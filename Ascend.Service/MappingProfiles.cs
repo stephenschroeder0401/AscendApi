@@ -12,6 +12,7 @@ namespace ApiTemplate.Service
         public MappingProfiles()
         {
             CreateMap<Address, AddressResponse>();
+            CreateMap<AddressResponse, Address>();
         }
     }
 }

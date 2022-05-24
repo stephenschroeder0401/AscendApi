@@ -1,3 +1,4 @@
+using ApiTemplate.Interface;
 using ApiTemplate.Model;
 using ApiTemplate.Repository;
 using ApiTemplate.Service;
@@ -15,19 +16,17 @@ namespace TestAscendApi
     {
         private ApiTemplateService _apiTemplateService;
 
-        private Mock<IHttpClientFactory> httpFactory;
         private Mock<IMemoryCache> memoryCache;
-        private Mock<IConfiguration> config;
+        private Mock<IGoogleMapsService> googleMapsService;
         private static IMapper mapper;
  
 
         [SetUp]
         public void Setup()
         {
-            httpFactory = new Mock<IHttpClientFactory>();
+         
             memoryCache = new Mock<IMemoryCache>();
-            config = new Mock<IConfiguration>();
-           //mapper = new Mock<IMapper>();
+            googleMapsService = new Mock<IGoogleMapsService>();
 
             var options = new DbContextOptionsBuilder<AscendContext>()
                 .UseInMemoryDatabase(databaseName: "Ascend")
@@ -56,7 +55,7 @@ namespace TestAscendApi
             IMapper map = mappingConfig.CreateMapper();
             mapper = map;
 
-            _apiTemplateService = new ApiTemplateService(httpFactory.Object, memoryCache.Object, context, config.Object, mapper);
+            _apiTemplateService = new ApiTemplateService(memoryCache.Object, context, mapper, googleMapsService.Object);
 
         }
 

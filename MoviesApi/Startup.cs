@@ -41,7 +41,8 @@ namespace TemplateApi
             });
 
             services.AddScoped<IApiTemplateService, ApiTemplateService>();
-            
+            services.AddScoped<IGoogleMapsService, GoogleMapsService>();
+
             services.AddDbContext<AscendContext>(opt => {
                 {
                     opt.UseSqlServer(_config.GetConnectionString("DefaultConnection"));

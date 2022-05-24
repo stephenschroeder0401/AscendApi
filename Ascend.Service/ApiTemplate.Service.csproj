@@ -15,6 +15,7 @@
     <ProjectReference Include="..\Ascend.Model\ApiTemplate.Model.csproj" />
     <ProjectReference Include="..\Ascend.Interface\ApiTemplate.Interface.csproj" />
     <ProjectReference Include="..\Ascend.Model\ApiTemplate.Model.csproj" />
+    <ProjectReference Include="..\Ascend.Repository\ApiTemplate.Repository.csproj" />
   </ItemGroup>
 
 </Project>

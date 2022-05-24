@@ -16,12 +16,11 @@ namespace TemplateApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration _config;
+        public Startup(IConfiguration config)
         {
-            Configuration = configuration;
+            _config = config;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,7 +36,7 @@ namespace TemplateApi
             
             services.AddDbContext<AscendContext>(opt => {
                 {
-                    opt.UseSqlServer("Server=localhost; Database=Ascend; Trusted_Connection=True; MultipleActiveResultSets=true");
+                    opt.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
                 }
             });
             services.AddHttpClient();

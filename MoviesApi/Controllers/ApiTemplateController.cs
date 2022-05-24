@@ -22,9 +22,9 @@ namespace MoviesApi.Controllers
 
         [Route("coordinates")]
         [HttpPost]
-        public async Task<ActionResult> Validate(AddressesRequest request)
+        public async Task<ActionResult> GetCoordinatesFromAddresses(AddressesRequest request)
         {
-            var result =  await _ApiTemplateService.GetCoordinatesFromAddress(request);
+            var result =  await _ApiTemplateService.GetCoordinatesFromAddresses(request);
             return Ok(result); 
         }
     }

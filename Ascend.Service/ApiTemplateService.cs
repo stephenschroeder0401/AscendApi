@@ -11,6 +11,8 @@ using Microsoft.Extensions.Caching.Memory;
 using ApiTemplate.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Net;
+using System.Web.Http;
 
 namespace ApiTemplate.Service
 {
@@ -34,11 +36,11 @@ namespace ApiTemplate.Service
 
         }
 
-        public async Task<List<AddressResponse>> GetCoordinatesFromAddresses(AddressesRequest addresses)
+        public async Task<AddressesResponse> GetCoordinatesFromAddresses(AddressesRequest addresses)
         {
             var httpClient = _httpFactory.CreateClient();
 
-            var validatedAddresses = new List<AddressResponse>();
+            var validatedAddresses = new AddressesResponse() { ValidAddresses = new List<AddressResponse>(), InvalidAddresses = new List<AddressRequest>()};
 
             JToken coordinates;
 
@@ -53,17 +55,26 @@ namespace ApiTemplate.Service
 
                     if (fullAddress != null)
                     {
-                        validatedAddresses.Add(fullAddress);
+                        validatedAddresses.ValidAddresses.Add(fullAddress);
                         continue;
                     }
 
                     //Get address coordinates from api if not found in cache or DB
-                    var response = await httpClient.GetAsync($"{_mapsBaseUrl}{addressString}&key={_mapsApiKey}");
-                    var json = await response.Content.ReadAsStringAsync();
-                    
-                    coordinates = JObject.Parse(json).SelectToken("results[0].geometry.location");
+                    try
+                    {
+                        var response = await httpClient.GetAsync($"{_mapsBaseUrl}{addressString}&key={_mapsApiKey}");
+                        response.EnsureSuccessStatusCode();
+                        
+                        var json = await response.Content.ReadAsStringAsync();
 
-                    _memoryCache.Set(addressString, coordinates);
+                        coordinates = JObject.Parse(json).SelectToken("results[0].geometry.location");
+
+                        _memoryCache.Set(addressString, coordinates);
+                    }
+                    catch (HttpRequestException ex) 
+                    {
+                        throw new HttpRequestException(ex.Message);
+                    }
 
                 }
                 else
@@ -71,21 +82,29 @@ namespace ApiTemplate.Service
                     coordinates = cacheValue;  
                 }
 
-                var addressResponse = new AddressResponse()
+               
+                if (coordinates != null)
                 {
-                    AddressLineOne = address.AddressLineOne,
-                    City = address.City,
-                    State = address.State,
-                    Zip = address.Zip,
-                    Latitude = (decimal)coordinates.SelectToken("lat"),
-                    Longitude = (decimal)coordinates.SelectToken("lng")
-                };
+                    var addressResponse = new AddressResponse()
+                    {
+                        AddressLineOne = address.AddressLineOne,
+                        City = address.City,
+                        State = address.State,
+                        Zip = address.Zip,
+                        Latitude = (decimal)coordinates.SelectToken("lat"),
+                        Longitude = (decimal)coordinates.SelectToken("lng")
+                    };
 
-                validatedAddresses.Add(addressResponse);
+                    validatedAddresses.ValidAddresses.Add(addressResponse);
 
-                //Add to database if we hit maps API 
-                if(cacheValue == null)
-                    _context.AddressResponses.Add(addressResponse);
+                    //Add to database if we hit maps API 
+                    if (cacheValue == null)
+                        _context.AddressResponses.Add(addressResponse);
+                }
+                else
+                {
+                    validatedAddresses.InvalidAddresses.Add(address);
+                }
             }
 
             await _context.SaveChangesAsync();

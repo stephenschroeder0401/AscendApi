@@ -7,6 +7,8 @@ namespace ApiTemplate.Interface
 {
     public interface IApiTemplateService
     {
-        public Task<List<AddressResponse>> GetCoordinatesFromAddress(AddressesRequest request);
+        public Task<AddressesResponse> GetCoordinatesFromAddresses(AddressesRequest request);
+
+        public Task<AddressResponse> Get(string line1, string city, string state);
     }
 }

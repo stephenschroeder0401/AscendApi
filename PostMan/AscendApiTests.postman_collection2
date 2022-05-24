@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "451da304-b0e9-439b-bf53-3846338e46c6",
+		"name": "AscendApiTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ValdOnly",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c1ebafbf-e1d5-4099-bba1-40e1a1facd25",
+						"exec": [
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"\");\r",
+							"    pm.response.to.not.have.jsonBody({\r",
+							"  \"validAddresses\": [\r",
+							"    {\r",
+							"      \"addressResponseId\": 1,\r",
+							"      \"addressLineOne\": \"114 Walti Street\",\r",
+							"      \"city\": \"Santa Cruz\",\r",
+							"      \"state\": \"CA\",\r",
+							"      \"zip\": \"95060\",\r",
+							"      \"latitude\": 36.97,\r",
+							"      \"longitude\": -122.03\r",
+							"    }\r",
+							"  ],\r",
+							"  \"invalidAddresses\": []\r",
+							"});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"addresses\": [\r\n    {\r\n      \"addressLineOne\": \"114 Walti Street\",\r\n      \"city\": \"Santa Cruz\",\r\n      \"state\": \"CA\",\r\n      \"zip\": \"95060\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44327/address/coordinates",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44327",
+					"path": [
+						"address",
+						"coordinates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvalidAndValid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "169a67e9-594d-4861-b42d-2eb2b72c0d54",
+						"exec": [
+							"pm.test(\"response should return one valid address and one invalid address\", function () {\r",
+							"\r",
+							"    pm.response.to.have.body(\r",
+							"{\r",
+							"  \"validAddresses\": [\r",
+							"    {\r",
+							"      \"addressLineOne\": \"114 Walti Street\",\r",
+							"      \"city\": \"Santa Cruz\",\r",
+							"      \"state\": \"CA\",\r",
+							"      \"zip\": \"95060\",\r",
+							"      \"latitude\": 36.97,\r",
+							"      \"longitude\": -122.03\r",
+							"    }\r",
+							"  ],\r",
+							"  \"invalidAddresses\": [{\r",
+							"      \"addressLineOne\": \"string\",\r",
+							"      \"city\": \"string\",\r",
+							"      \"state\": \"string\",\r",
+							"      \"zip\": \"string\"\r",
+							"  }]\r",
+							"});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"addresses\": [\r\n    {\r\n      \"addressLineOne\": \"114 Walti Street\",\r\n      \"city\": \"Santa Cruz\",\r\n      \"state\": \"CA\",\r\n      \"zip\": \"95060\"\r\n    },\r\n    {\r\n      \"addressLineOne\": \"string\",\r\n      \"city\": \"string\",\r\n      \"state\": \"string\",\r\n      \"zip\": \"string\"\r\n    }\r\n  ]\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44327/address/coordinates",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44327",
+					"path": [
+						"address",
+						"coordinates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvalidRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f5f33e6-0100-4de7-8ca7-5f1601616ffe",
+						"exec": [
+							"pm.test(\"Status code is 400\", () => {\r",
+							"  pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"addresses\": [\r\n    {\r\n      \"addressLineOne\": \"114 Walti Street\",\r\n      \"city\": \"Santa Cruz\",\r\n      \"state\": \"CA\"\r\n    }\r\n  ]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44327/address/coordinates",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44327",
+					"path": [
+						"address",
+						"coordinates"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

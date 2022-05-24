@@ -39,6 +39,9 @@ namespace ApiTemplate.Service
 
                 var coordinates = JObject.Parse(json).SelectToken("results[0].geometry.location");
 
+                if (coordinates == null)
+                    return null;
+
                 return new AddressResponse()
                 {
                     AddressLineOne = address.AddressLineOne,

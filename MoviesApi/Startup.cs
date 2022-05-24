@@ -11,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using ApiTemplate.Interface;
 using ApiTemplate.Repository;
 using ApiTemplate.Service;
+using FluentValidation.AspNetCore;
+using ApiTemplate.Api.Validation;
 
 namespace TemplateApi
 {
@@ -26,7 +28,11 @@ namespace TemplateApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<AddressesRequestValidator>();
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiTemplate.Api", Version = "v1" });

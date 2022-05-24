@@ -34,7 +34,7 @@ namespace ApiTemplate.Service
 
         }
 
-        public async Task<List<AddressResponse>> Validate(List<AddressRequest> addresses)
+        public async Task<List<AddressResponse>> GetCoordinatesFromAddresses(AddressesRequest addresses)
         {
             var httpClient = _httpFactory.CreateClient();
 
@@ -42,7 +42,7 @@ namespace ApiTemplate.Service
 
             JToken coordinates;
 
-            foreach (var address in addresses)
+            foreach (var address in addresses.Addresses)
             {
                 var addressString = $"{address.AddressLineOne.ToLower()},+{address.City.ToLower()},+{address.State.ToLower()}";
 
@@ -93,7 +93,6 @@ namespace ApiTemplate.Service
             return validatedAddresses;
 
         }
-
 
 
         public async Task<AddressResponse> Get(string line1, string city, string state) 

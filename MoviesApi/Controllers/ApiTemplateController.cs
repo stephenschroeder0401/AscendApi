@@ -20,11 +20,11 @@ namespace MoviesApi.Controllers
             _ApiTemplateService = ApiTemplateService;
         }
 
-        [Route("validate")]
+        [Route("coordinates")]
         [HttpPost]
-        public async Task<ActionResult> Validate(List<AddressRequest> request)
+        public async Task<ActionResult> Validate(AddressesRequest request)
         {
-            var result =  await _ApiTemplateService.Validate(request);
+            var result =  await _ApiTemplateService.GetCoordinatesFromAddress(request);
             return Ok(result); 
         }
     }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApiTemplate.Api
+namespace ApiTemplate.Service
 {
     public class MappingProfiles : Profile
     {

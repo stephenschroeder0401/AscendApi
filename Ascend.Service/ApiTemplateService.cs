@@ -55,7 +55,7 @@ namespace ApiTemplate.Service
                 if (!_memoryCache.TryGetValue(addressString, out JToken cacheValue))
                 {
                     //Look for address in DB if not found in cache
-                    var fullAddress = await Get(address.AddressLineOne, address.City, address.State);
+                    var fullAddress = await GetAddress(address.AddressLineOne, address.City, address.State);
 
                     if (fullAddress != null)
                     {
@@ -118,7 +118,7 @@ namespace ApiTemplate.Service
         }
 
 
-        public async Task<AddressResponse> Get(string line1, string city, string state) 
+        public async Task<AddressResponse> GetAddress(string line1, string city, string state) 
         {
            var address = await _context.Address.ProjectTo<AddressResponse>(_mapper.ConfigurationProvider)
                 .Where(x => x.AddressLineOne == line1 &&

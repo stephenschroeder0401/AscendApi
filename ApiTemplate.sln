@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTemplate.Model", "Ascend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTemplate.Interface", "Ascend.Interface\ApiTemplate.Interface.csproj", "{9787DE45-3E49-4064-9239-000D9F69A041}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{723D82F6-0123-4FB5-9A5D-CFC844BAE1F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAscendApi", "TestAscendApi\TestAscendApi.csproj", "{39E00A15-9D6E-4AEA-BC2C-5F2EC996B272}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +43,16 @@ Global
 		{9787DE45-3E49-4064-9239-000D9F69A041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9787DE45-3E49-4064-9239-000D9F69A041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9787DE45-3E49-4064-9239-000D9F69A041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39E00A15-9D6E-4AEA-BC2C-5F2EC996B272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39E00A15-9D6E-4AEA-BC2C-5F2EC996B272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39E00A15-9D6E-4AEA-BC2C-5F2EC996B272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39E00A15-9D6E-4AEA-BC2C-5F2EC996B272}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{39E00A15-9D6E-4AEA-BC2C-5F2EC996B272} = {723D82F6-0123-4FB5-9A5D-CFC844BAE1F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {57F8B7E3-5EA2-41E1-B13F-B49BE734C424}

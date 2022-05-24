@@ -9,6 +9,6 @@ namespace ApiTemplate.Interface
     {
         public Task<AddressesResponse> GetCoordinatesFromAddresses(AddressesRequest request);
 
-        public Task<AddressResponse> Get(string line1, string city, string state);
+        public Task<AddressResponse> GetAddress(string line1, string city, string state);
     }
 }

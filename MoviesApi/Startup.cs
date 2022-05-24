@@ -13,6 +13,8 @@ using ApiTemplate.Repository;
 using ApiTemplate.Service;
 using FluentValidation.AspNetCore;
 using ApiTemplate.Api.Validation;
+using AutoMapper;
+using ApiTemplate.Api;
 
 namespace TemplateApi
 {
@@ -47,10 +49,16 @@ namespace TemplateApi
             });
             services.AddHttpClient();
             services.AddMemoryCache();
-            
 
-          
-            
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfiles());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
+
 
         }
 

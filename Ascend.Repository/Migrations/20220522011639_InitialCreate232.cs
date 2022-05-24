@@ -8,7 +8,7 @@ namespace ApiTemplate.Repository.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AddressResponses",
+                name: "Address",
                 columns: table => new
                 {
                     AddressResponseId = table.Column<int>(type: "int", nullable: false)
@@ -17,8 +17,8 @@ namespace ApiTemplate.Repository.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Zip = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Latitude = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Longitude = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Latitude = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
+                    Longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: false)
                 },
                 constraints: table =>
                 {

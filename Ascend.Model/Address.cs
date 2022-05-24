@@ -5,10 +5,10 @@ using System.Text;
 
 namespace ApiTemplate.Model
 {
-    public class AddressResponse
+    public class Address
     {
         [Key]
-        public int AddressResponseId { get; set; }
+        public int AddressId { get; set; }
         public string AddressLineOne { get; set; }
         public string City { get; set; }
         public string State { get; set; }

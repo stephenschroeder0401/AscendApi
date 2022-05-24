@@ -11,8 +11,10 @@ using Microsoft.Extensions.Caching.Memory;
 using ApiTemplate.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using AutoMapper;
 using System.Net;
 using System.Web.Http;
+using AutoMapper.QueryableExtensions;
 
 namespace ApiTemplate.Service
 {
@@ -21,15 +23,17 @@ namespace ApiTemplate.Service
         private readonly IHttpClientFactory _httpFactory;
         private readonly IMemoryCache _memoryCache;
         private readonly AscendContext _context;
+        private readonly IMapper _mapper;
         private readonly string _mapsBaseUrl;
         private readonly string _mapsApiKey;
 
 
-        public ApiTemplateService(IHttpClientFactory httpFactory, IMemoryCache memoryCache, AscendContext context, IConfiguration config)
+        public ApiTemplateService(IHttpClientFactory httpFactory, IMemoryCache memoryCache, AscendContext context, IConfiguration config, IMapper mapper)
         {
             _httpFactory = httpFactory;
             _memoryCache = memoryCache;
             _context = context;
+            _mapper = mapper;
 
             _mapsBaseUrl = config["GoogleMapsAddressApi:BaseUrl"];
             _mapsApiKey = config["GoogleMapsAddressApi:ApiKey"];
@@ -85,7 +89,7 @@ namespace ApiTemplate.Service
                
                 if (coordinates != null)
                 {
-                    var addressResponse = new AddressResponse()
+                    var newAddress = new Address()
                     {
                         AddressLineOne = address.AddressLineOne,
                         City = address.City,
@@ -95,11 +99,11 @@ namespace ApiTemplate.Service
                         Longitude = (decimal)coordinates.SelectToken("lng")
                     };
 
-                    validatedAddresses.ValidAddresses.Add(addressResponse);
+                    validatedAddresses.ValidAddresses.Add(_mapper.Map<AddressResponse>(newAddress));
 
                     //Add to database if we hit maps API 
                     if (cacheValue == null)
-                        _context.AddressResponses.Add(addressResponse);
+                        _context.Address.Add(newAddress);
                 }
                 else
                 {
@@ -116,7 +120,8 @@ namespace ApiTemplate.Service
 
         public async Task<AddressResponse> Get(string line1, string city, string state) 
         {
-           var address = await _context.AddressResponses.Where(x => x.AddressLineOne == line1 &&
+           var address = await _context.Address.ProjectTo<AddressResponse>(_mapper.ConfigurationProvider)
+                .Where(x => x.AddressLineOne == line1 &&
                   x.City == city && x.State == state).FirstOrDefaultAsync();
             
            return address;

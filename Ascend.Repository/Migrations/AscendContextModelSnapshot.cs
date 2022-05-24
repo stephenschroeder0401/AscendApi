@@ -16,7 +16,7 @@ namespace ApiTemplate.Repository.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("ApiTemplate.Model.AddressResponse", b =>
+            modelBuilder.Entity("ApiTemplate.Model.Address", b =>
                 {
                     b.Property<int>("AddressResponseId")
                         .ValueGeneratedOnAdd()
